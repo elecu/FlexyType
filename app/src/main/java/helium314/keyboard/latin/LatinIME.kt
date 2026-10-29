@@ -59,6 +59,7 @@ import helium314.keyboard.event.HapticEvent
 import helium314.keyboard.event.InputTransaction
 import helium314.keyboard.keyboard.Key
 import helium314.keyboard.keyboard.Keyboard
+import helium314.keyboard.keyboard.FleksyGestureHandler
 import helium314.keyboard.keyboard.KeyboardActionListener
 import helium314.keyboard.keyboard.KeyboardActionListenerImpl
 import helium314.keyboard.keyboard.KeyboardId
@@ -1645,10 +1646,18 @@ class LatinIME : InputMethodService(),
         suggestionStripView != null && settings.current.mToolbarMode != ToolbarMode.HIDDEN
             && !CjkInputManager.getInstance(this).isComposing
 
+    /** Shows the Fleksy alternatives list in the strip without touching the input logic's suggestions. */
+    fun showFleksySuggestions(suggestedWords: SuggestedWords) {
+        if (!hasSuggestionStripView()) return
+        suggestionStripView?.setToolbarVisibility(false, saveState = false)
+        suggestionStripView?.setSuggestions(suggestedWords, richImm.currentSubtype.isRtlSubtype)
+    }
+
     private fun setSuggestedWords(suggestedWords: SuggestedWords) {
         if (CjkInputManager.getInstance(this).isCjkSubtypeActive(richImm.currentSubtype)) {
             return
         }
+        if (FleksyGestureHandler.instance?.blocksSuggestionUpdate(suggestedWords) == true) return
         val currentSettingsValues = settings.current
         inputLogic.setSuggestedWords(suggestedWords)
         if (keyboardSwitcher.isGifPickerShowing) return
@@ -1696,6 +1705,7 @@ class LatinIME : InputMethodService(),
 
     override fun pickSuggestionManually(suggestionInfo: SuggestedWordInfo?) {
         if (suggestionInfo == null) return
+        if (FleksyGestureHandler.instance?.onSuggestionTapped(suggestionInfo.mWord) == true) return
         val completeInputTransaction = inputLogic.onPickSuggestionManually(settings.current, suggestionInfo, keyboardSwitcher.keyboardShiftMode, handler)
         updateStateAfterInputTransaction(completeInputTransaction)
         if (keyboardSwitcher.isHandwritingShowing) keyboardSwitcher.clearHandwritingCanvas()
@@ -1748,6 +1758,7 @@ class LatinIME : InputMethodService(),
 
     fun setNeutralSuggestionStrip(skipExternalSuggestions: Boolean) {
         if (keyboardSwitcher.isHandwritingShowing) return
+        if (FleksyGestureHandler.instance?.blocksSuggestionUpdate(SuggestedWords.getEmptyInstance()) == true) return
         val cjkManager = CjkInputManager.getInstance(this)
         if (cjkManager.isComposing) return
         val currentSettings = settings.current
