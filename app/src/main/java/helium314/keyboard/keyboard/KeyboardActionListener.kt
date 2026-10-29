@@ -96,6 +96,9 @@ interface KeyboardActionListener {
 
     fun onFullKeyboardSwipe(steps: Int, action: Int): Boolean = false
 
+    /** Fleksy-style swipe on the letter keys. [direction] is one of the FLEKSY_* constants. */
+    fun onFleksySwipe(direction: Int, steps: Int): Boolean = false
+
     fun toggleNumpad(withSliding: Boolean, forceReturnToAlpha: Boolean): Boolean
 
     fun onMoveDeletePointer(steps: Int)
@@ -197,6 +200,12 @@ interface KeyboardActionListener {
         const val SWIPE_HIDE_KEYBOARD = 4
         const val SWIPE_TOUCHPAD_MODE = 5
         const val SWIPE_MORE_SUGGESTIONS = 6
+        const val SWIPE_FLEKSY = 7
+
+        const val FLEKSY_RIGHT = 0
+        const val FLEKSY_LEFT = 1
+        const val FLEKSY_UP = 2
+        const val FLEKSY_DOWN = 3
 
         const val CODE_TOUCHPAD_ON = 1000
         const val CODE_TOUCHPAD_OFF = 1001

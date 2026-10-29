@@ -20,7 +20,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.leanbitlab.leantype"
+        applicationId = "com.leanbitlab.leantype.flexy"
         minSdk = 21
         targetSdk = 35
         // ponytail: release version 4.3.0
