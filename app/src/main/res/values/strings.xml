@@ -1613,6 +1613,7 @@ New dictionary:
     <string name="label_bin" tools:keep="@string/label_bin">Bin</string>
     <!-- Title of the setting for full keyboard swipe gesture -->
     <string name="full_keyboard_swipe_gesture">Full keyboard swipe gesture</string>
+    <string name="full_keyboard_swipe_fleksy" translatable="false">Fleksy gestures (space, delete, suggestions, save word)</string>
     <!-- Description of the setting for full keyboard swipe gesture -->
     <string name="full_keyboard_swipe_gesture_summary">Swipe horizontally across the keyboard to perform an action (auto turns off gesture typing)</string>
     <!-- Title of the setting for horizontal spacebar swipe gesture -->

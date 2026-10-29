@@ -104,7 +104,7 @@ object Defaults {
     const val PREF_MORE_AUTO_CORRECTION = false
     const val PREF_AUTO_CORRECT_THRESHOLD = 0.185f
     const val PREF_AUTOCORRECT_SHORTCUTS = true
-    const val PREF_BACKSPACE_REVERTS_AUTOCORRECT = true
+    const val PREF_BACKSPACE_REVERTS_AUTOCORRECT = false
     const val PREF_BACKSPACE_REPEAT_DELETES_WORDS = false
     const val PREF_CENTER_SUGGESTION_TEXT_TO_ENTER = false
     const val PREF_CENTER_TYPED_WORD = false
@@ -147,13 +147,13 @@ object Defaults {
     const val PREF_EMOJI_FONT_SCALE = DEFAULT_SIZE_SCALE
     const val PREF_EMOJI_KEY_FIT = true
     const val PREF_EMOJI_SKIN_TONE = ""
-    const val PREF_SPACE_HORIZONTAL_SWIPE = "move_cursor"
+    const val PREF_SPACE_HORIZONTAL_SWIPE = "switch_language"
     const val PREF_SPACE_VERTICAL_SWIPE = "touchpad_mode"
     const val PREF_SPACE_VERTICAL_DOWN_SWIPE = "none"
     const val PREF_VERTICAL_SWIPE_THRESHOLD = 24
     const val PREF_DELETE_SWIPE = true
     const val PREF_DELETE_SWIPE_WORD_BY_WORD = false
-    const val PREF_AUTOSPACE_AFTER_PUNCTUATION = false
+    const val PREF_AUTOSPACE_AFTER_PUNCTUATION = true
     const val PREF_AUTOSPACE_AFTER_EMOJI = false
     const val PREF_AUTOSPACE_AFTER_SUGGESTION = true
     const val PREF_AUTOSPACE_AFTER_GESTURE_TYPING = true
@@ -174,7 +174,7 @@ object Defaults {
     const val PREF_COMPRESS_SCREENSHOTS = true
     const val PREF_AUTO_READ_OTP = false
     const val PREF_INLINE_MATH_CALCULATION = true
-    const val PREF_GESTURE_INPUT = true
+    const val PREF_GESTURE_INPUT = false
     // ponytail: gesture method default value
     const val PREF_GESTURE_METHOD = "fallback"
     const val PREF_VIBRATION_DURATION_SETTINGS = -1
@@ -208,7 +208,7 @@ object Defaults {
     @SuppressLint("RtlHardcoded")
     const val PREF_ONE_HANDED_GRAVITY = Gravity.LEFT
     const val PREF_ONE_HANDED_SCALE = 1f
-    const val PREF_SHOW_NUMBER_ROW = false
+    const val PREF_SHOW_NUMBER_ROW = true
     const val PREF_SHOW_NUMBER_ROW_IN_SYMBOLS = true
     const val PREF_COMPACT_NUMBER_ROW_IN_SYMBOLS = true
     const val PREF_LOCALIZED_NUMBER_ROW = true
@@ -225,7 +225,7 @@ object Defaults {
     const val PREF_MORE_POPUP_KEYS = "main"
     const val PREF_SPACE_TO_CHANGE_LANG = true
     const val PREF_LANGUAGE_SWIPE_DISTANCE = 5
-    const val PREF_FULL_KEYBOARD_SWIPE = "none"
+    const val PREF_FULL_KEYBOARD_SWIPE = "fleksy"
     const val PREF_FULL_SWIPE_SWITCH_LANGUAGE = false
     const val PREF_TOUCHPAD_SENSITIVITY = 50
     const val PREF_TOUCHPAD_FULLSCREEN = false

@@ -1,0 +1,64 @@
+name: FlexyType APK
+
+# Builds the FlexyType APK on every push to the flexy-gestures branch and publishes it
+# as a GitHub release so it can be downloaded straight from a phone.
+on:
+  push:
+    branches: [ flexy-gestures ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      # A fixed debug key, so each new build installs as an update over the previous one.
+      - name: Install fixed debug signing key
+        run: |
+          mkdir -p ~/.android
+          cp .github/flexytype-debug.keystore ~/.android/debug.keystore
+
+      - name: Build
+        run: |
+          chmod +x gradlew
+          set -o pipefail
+          ./gradlew assembleStandardDebug --stacktrace 2>&1 | tee build.log
+
+      - name: Rename APK
+        run: |
+          mkdir -p out
+          cp "$(find app/build/outputs/apk -name '*.apk' | head -1)" out/FlexyType.apk
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: FlexyType build ${{ github.run_number }}
+          files: out/FlexyType.apk
+          make_latest: true
+
+      # On failure, push the build log to the ci-logs branch so it can be read without the Actions UI.
+      - name: Publish failure log
+        if: failure()
+        run: |
+          git config user.name "flexytype-ci"
+          git config user.email "flexytype-ci@users.noreply.github.com"
+          cp build.log /tmp/build.log || echo "no build log" > /tmp/build.log
+          git checkout --orphan ci-logs
+          git rm -rf --cached . > /dev/null
+          { grep -E "^e: |error:|What went wrong" -A5 /tmp/build.log | head -n 200; echo "-----"; tail -n 150 /tmp/build.log; } > build-${{ github.run_number }}.log
+          git add build-${{ github.run_number }}.log
+          git commit -m "Build log ${{ github.run_number }}"
+          git push -f origin ci-logs

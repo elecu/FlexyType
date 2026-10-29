@@ -487,6 +487,12 @@ class KeyboardActionListenerImpl(private val latinIME: LatinIME, private val inp
         }
     }
 
+    private val fleksyGestures by lazy {
+        FleksyGestureHandler(latinIME, inputLogic, this) { performHapticFeedback(HapticEvent.KEY_PRESS) }
+    }
+
+    override fun onFleksySwipe(direction: Int, steps: Int): Boolean = fleksyGestures.onSwipe(direction)
+
     override fun onFullKeyboardSwipe(steps: Int, action: Int): Boolean = when (action) {
         KeyboardActionListener.SWIPE_MOVE_CURSOR -> onMoveCursorHorizontally(steps)
         KeyboardActionListener.SWIPE_SWITCH_LANGUAGE -> {

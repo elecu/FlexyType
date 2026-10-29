@@ -249,6 +249,7 @@ fun createGestureTypingSettings(context: Context) = listOf(
     },
     Setting(context, Settings.PREF_FULL_KEYBOARD_SWIPE, R.string.full_keyboard_swipe_gesture, R.string.full_keyboard_swipe_gesture_summary) {
         val items = listOf(
+            stringResource(R.string.full_keyboard_swipe_fleksy) to "fleksy",
             stringResource(R.string.switch_language) to "switch_language",
             stringResource(R.string.space_swipe_move_cursor_entry) to "move_cursor",
             stringResource(R.string.space_swipe_toggle_numpad_entry) to "toggle_numpad",

@@ -913,6 +913,24 @@ class PointerTracker private constructor(
                 }
                 sListener.onMoveDeletePointer(stepsX, stepsY)
             }
+        } else if (sv.mFullKeyboardSwipe == KeyboardActionListener.SWIPE_FLEKSY) {
+            // One action per stroke, in any of the four directions.
+            if (mFullSwipeStarted) return
+            val dX = x - mStartX
+            val dY = y - mStartY
+            val absDx = abs(dX)
+            val absDy = abs(dY)
+            if (max(absDx, absDy) < FLEKSY_SWIPE_THRESHOLD_DP.dpToPx(Resources.getSystem())) return
+            val direction = if (absDx >= absDy) {
+                if (dX > 0) KeyboardActionListener.FLEKSY_RIGHT else KeyboardActionListener.FLEKSY_LEFT
+            } else {
+                if (dY > 0) KeyboardActionListener.FLEKSY_DOWN else KeyboardActionListener.FLEKSY_UP
+            }
+            mFullSwipeStarted = true
+            getTimerProxy().cancelKeyTimersOf(this)
+            dismissPopupKeysPanel()
+            mCurrentKey?.let { setReleasedKeyGraphics(it, false) }
+            sListener.onFleksySwipe(direction, 1)
         } else if (sv.mFullKeyboardSwipe != KeyboardActionListener.SWIPE_NO_ACTION) {
             val action = sv.mFullKeyboardSwipe
             val dX = x - mStartX
@@ -1331,6 +1349,7 @@ class PointerTracker private constructor(
 
     companion object {
         private val TAG = PointerTracker::class.java.simpleName
+        private const val FLEKSY_SWIPE_THRESHOLD_DP = 30
         private const val DEBUG_EVENT = false
         private const val DEBUG_MOVE_EVENT = false
         private const val DEBUG_LISTENER = false
