@@ -55,10 +55,10 @@ jobs:
         run: |
           git config user.name "flexytype-ci"
           git config user.email "flexytype-ci@users.noreply.github.com"
-          cp build.log /tmp/build.log || echo "no build log" > /tmp/build.log
+          cp build.log /tmp/build.log 2>/dev/null || echo "Build step did not run: an earlier step failed (see Actions UI)." > /tmp/build.log
           git checkout --orphan ci-logs
           git rm -rf --cached . > /dev/null
-          { grep -E "^e: |error:|What went wrong" -A5 /tmp/build.log | head -n 200; echo "-----"; tail -n 150 /tmp/build.log; } > build-${{ github.run_number }}.log
-          git add build-${{ github.run_number }}.log
+          { grep -E "^e: |error:|What went wrong" -A5 /tmp/build.log | head -n 200; echo "-----"; tail -n 150 /tmp/build.log; } > build-${{ github.run_number }}.txt
+          git add -f build-${{ github.run_number }}.txt
           git commit -m "Build log ${{ github.run_number }}"
           git push -f origin ci-logs
